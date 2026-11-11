@@ -30,6 +30,6 @@ NODE_ENV=development
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
-DB_PASSWORD=isi_password_pilihanmu
+DB_PASSWORD=
 DB_DATABASE=inventory_db
 ```
