@@ -3,14 +3,16 @@
 Backend aplikasi pengelolaan persediaan barang (Studi Kasus 1) memakai **NestJS**, **TypeORM**, dan **PostgreSQL**.
 Mencakup kategori, pemasok, gudang, produk, serta transaksi pergerakan stok (barang masuk dan keluar).
 
+
 ## Anggota kelompok dan pembagian tugas
 
 | Anggota | Modul / tugas |
 |---------|---------------|
 | Nur Laela Suci Safitri | Setup project, Categories, README, perancangan, ERD |
-| (nama anggota 2) | Suppliers, Warehouses |
+| Syifa Khaerunisa Nabila | Suppliers, Warehouses |
 | Alief Satrio | Products, Stocks (informasi stok) |
 | (nama anggota 4) | Stock Movements (transaksi barang masuk/keluar) |
+
 
 ## Dokumentasi
 
