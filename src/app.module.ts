@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { CategoriesModule } from './categories/categories.module.js';
+import { ProductsModule } from './products/products.module.js';
+import { StocksModule } from './stocks/stocks.module.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 @Module({
   imports: [
-    // membaca file .env dan memvalidasinya
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
@@ -21,8 +21,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         DB_DATABASE: Joi.string().required(),
       }),
     }),
-
-    // koneksi database PostgreSQL lewat TypeORM
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -32,12 +30,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_DATABASE'),
-        autoLoadEntities: true, // entity didaftarkan lewat TypeOrmModule.forFeature di tiap module
-        synchronize: config.get<string>('NODE_ENV') === 'development', // tabel dibuat otomatis (hanya development)
+        autoLoadEntities: true,
+        synchronize: config.get<string>('NODE_ENV') === 'development',
       }),
     }),
-    
-    CategoriesModule],
+    CategoriesModule,
+    ProductsModule,
+    StocksModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
