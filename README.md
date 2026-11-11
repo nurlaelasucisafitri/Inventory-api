@@ -8,7 +8,7 @@ Mencakup kategori, pemasok, gudang, produk, serta transaksi pergerakan stok (bar
 | Anggota | Modul / tugas |
 |---------|---------------|
 | Nur Laela Suci Safitri | Setup project, Categories, README, perancangan, ERD |
-| (nama anggota 2) | Suppliers, Warehouses |
+| Syifa Khaerunisa Nabila | Suppliers, Warehouses |
 | (nama anggota 3) | Products, Stocks (informasi stok) |
 | (nama anggota 4) | Stock Movements (transaksi barang masuk/keluar) |
 

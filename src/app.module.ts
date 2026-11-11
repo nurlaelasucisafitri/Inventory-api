@@ -5,6 +5,8 @@ import { CategoriesModule } from './categories/categories.module.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SuppliersModule } from './suppliers/suppliers.module.js';
+import { WarehousesModule } from './warehouses/warehouses.module.js';
 
 @Module({
   imports: [
@@ -37,7 +39,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
     }),
     
-    CategoriesModule],
+    CategoriesModule,
+    
+    SuppliersModule,
+    
+    WarehousesModule],
   controllers: [AppController],
   providers: [AppService],
 })
