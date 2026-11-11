@@ -1,0 +1,59 @@
+erDiagram
+    CATEGORIES ||--o{ PRODUCTS : "memiliki"
+    SUPPLIERS ||--o{ PRODUCTS : "memasok"
+    WAREHOUSES ||--o{ STOCK_MOVEMENTS : "memiliki"
+    STOCK_MOVEMENTS ||--|{ STOCK_MOVEMENT_ITEMS : "terdiri dari"
+    PRODUCTS ||--o{ STOCK_MOVEMENT_ITEMS : "muncul di"
+
+    CATEGORIES {
+        uuid id PK
+        varchar name UK
+        text description
+        timestamp created_at
+        timestamp updated_at
+    }
+    SUPPLIERS {
+        uuid id PK
+        varchar name
+        varchar email UK
+        varchar phone
+        text address
+        timestamp created_at
+        timestamp updated_at
+    }
+    WAREHOUSES {
+        uuid id PK
+        varchar name UK
+        varchar location
+        timestamp created_at
+        timestamp updated_at
+    }
+    PRODUCTS {
+        uuid id PK
+        varchar sku UK
+        varchar name
+        text description
+        varchar unit
+        decimal price
+        int min_stock
+        uuid category_id FK
+        uuid supplier_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    STOCK_MOVEMENTS {
+        uuid id PK
+        varchar reference_number UK
+        enum type "IN atau OUT"
+        timestamp movement_date
+        text notes
+        uuid warehouse_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    STOCK_MOVEMENT_ITEMS {
+        uuid id PK
+        uuid stock_movement_id FK
+        uuid product_id FK
+        int quantity
+    }
