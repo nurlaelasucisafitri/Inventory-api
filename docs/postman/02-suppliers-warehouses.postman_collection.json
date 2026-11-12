@@ -1,0 +1,728 @@
+{
+  "info": {
+    "name": "Inventory API - 02 Suppliers & Warehouses",
+    "description": "Pengujian CRUD Suppliers dan Warehouses (201/200/400/404/409). Jalankan seluruh collection berurutan dari atas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "2. Suppliers",
+      "item": [
+        {
+          "name": "Create supplier (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 201\", function () { pm.response.to.have.status(201); });",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set(\"supplierId\", body.data.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PT Maju Jaya\",\n  \"email\": \"sales@majujaya.co.id\",\n  \"phone\": \"021555123\",\n  \"address\": \"Jl. Merdeka No. 1, Jakarta\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create supplier - email duplikat (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 409\", function () { pm.response.to.have.status(409); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Pesan error memuat: sudah dipakai\", function () { const m = [].concat(body.message).join(' | '); pm.expect(m).to.include(\"sudah dipakai\"); });",
+                  "pm.test(\"success = false\", function () { pm.expect(body.success).to.eql(false); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PT Lain\",\n  \"email\": \"sales@majujaya.co.id\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create supplier - email tidak valid (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 400\", function () { pm.response.to.have.status(400); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Pesan error memuat: email tidak valid\", function () { const m = [].concat(body.message).join(' | '); pm.expect(m).to.include(\"email tidak valid\"); });",
+                  "pm.test(\"success = false\", function () { pm.expect(body.success).to.eql(false); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PT Salah\",\n  \"email\": \"bukan-email\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get all suppliers (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"array\", function () { pm.expect(body.data).to.be.an(\"array\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get supplier by id (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers/{{supplierId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers",
+                "{{supplierId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get supplier - tidak ditemukan (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers/00000000-0000-4000-8000-000000000000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers",
+                "00000000-0000-4000-8000-000000000000"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update supplier (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"phone berubah\", function () { pm.expect(body.data.phone).to.eql(\"021999888\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers/{{supplierId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers",
+                "{{supplierId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"021999888\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Warehouses",
+      "item": [
+        {
+          "name": "Create warehouse (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 201\", function () { pm.response.to.have.status(201); });",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set(\"warehouseId\", body.data.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gudang Pusat\",\n  \"location\": \"Bekasi\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create warehouse kedua (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 201\", function () { pm.response.to.have.status(201); });",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set(\"warehouse2Id\", body.data.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gudang Cabang\",\n  \"location\": \"Bandung\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create warehouse - nama duplikat (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gudang Pusat\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create warehouse - input tidak valid (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 400\", function () { pm.response.to.have.status(400); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Pesan error memuat: name harus diisi\", function () { const m = [].concat(body.message).join(' | '); pm.expect(m).to.include(\"name harus diisi\"); });",
+                  "pm.test(\"success = false\", function () { pm.expect(body.success).to.eql(false); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"location\": \"Tanpa nama\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get all warehouses (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get warehouse by id (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses/{{warehouseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses",
+                "{{warehouseId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get warehouse - tidak ditemukan (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses/00000000-0000-4000-8000-000000000000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses",
+                "00000000-0000-4000-8000-000000000000"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update warehouse (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"location berubah\", function () { pm.expect(body.data.location).to.eql(\"Cikarang, Bekasi\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses/{{warehouseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses",
+                "{{warehouseId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"location\": \"Cikarang, Bekasi\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Delete (200) & cek hasil",
+      "item": [
+        {
+          "name": "Delete supplier (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers/{{supplierId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers",
+                "{{supplierId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get supplier yang sudah dihapus (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers/{{supplierId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers",
+                "{{supplierId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete warehouse pusat (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses/{{warehouseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses",
+                "{{warehouseId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete warehouse cabang (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses/{{warehouse2Id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses",
+                "{{warehouse2Id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete warehouse lagi (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses/{{warehouseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses",
+                "{{warehouseId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
