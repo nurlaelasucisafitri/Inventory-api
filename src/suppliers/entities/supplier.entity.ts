@@ -1,11 +1,5 @@
-
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Product } from '../../products/entities/product.entity.js';
 
 @Entity({ name: 'suppliers' })
 export class Supplier {
@@ -23,6 +17,10 @@ export class Supplier {
 
     @Column({ type: 'text', nullable: true })
     address: string | null;
+
+    // satu pemasok memasok banyak produk
+    @OneToMany('Product', 'supplier')
+    products: Product[];
 
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;
