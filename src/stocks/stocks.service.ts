@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, In, Repository } from 'typeorm';
 import { Product } from '../products/entities/product.entity.js';
 import { Warehouse } from '../warehouses/entities/warehouse.entity.js';
-import { StockMovementItem } from '../stock-movements/stock-movements.service.js';
+import { StockMovementItem } from '../stock-movements/entities/stock-movement-item.entity.js';
 
 // Stok TIDAK disimpan di tabel produk. Stok selalu dihitung dari transaksi:
 //   stok = jumlah semua barang masuk (IN) - jumlah semua barang keluar (OUT)
