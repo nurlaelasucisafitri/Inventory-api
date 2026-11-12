@@ -24,7 +24,7 @@ Mencakup kategori, pemasok, gudang, produk, serta transaksi pergerakan stok (bar
 | [docs/postman/](docs/postman/) | Postman Collection |
 
 ### 2. Konfigurasi environment
-Buat file bernama `.env` di folder utama (sejajar dengan `package.json`). isinya:
+File bernama `.env` di folder utama
 
 ```
 PORT=3000
