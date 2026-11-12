@@ -4,7 +4,7 @@ import { StocksController } from './stocks.controller.js';
 import { StocksService } from './stocks.service.js';
 import { Product } from '../products/entities/product.entity.js';
 import { Warehouse } from '../warehouses/entities/warehouse.entity.js';
-import { StockMovementItem } from '../stock-movements/entities/stock-movement-item.entity.js';
+import { StockMovementItem } from '../stock-movements/stock-movements.service.js';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Product, Warehouse, StockMovementItem])],
