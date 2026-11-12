@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Product } from '../../products/entities/product.entity.js';
 
 @Entity({ name: 'categories' })
 export class Category {
@@ -10,6 +11,10 @@ export class Category {
 
     @Column({ type: 'text', nullable: true })
     description: string | null;
+
+    // satu kategori memiliki banyak produk
+    @OneToMany('Product', 'category')
+    products: Product[];
 
     @CreateDateColumn({ name: 'created_at' })
     created_at: Date;

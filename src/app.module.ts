@@ -1,25 +1,22 @@
-
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import Joi from 'joi';
 import { CategoriesModule } from './categories/categories.module.js';
-import { ProductsModule } from './products/products.module.js';
-import { StocksModule } from './stocks/stocks.module.js';
 import { SuppliersModule } from './suppliers/suppliers.module.js';
 import { WarehousesModule } from './warehouses/warehouses.module.js';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import Joi from 'joi';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProductsModule } from './products/products.module.js';
+import { StockMovementsModule } from './stock-movements/stock-movements.module.js';
+import { StocksModule } from './stocks/stocks.module.js';
 
 @Module({
     imports: [
+        // membaca file .env dan memvalidasinya
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: Joi.object({
                 PORT: Joi.number().default(3000),
-                NODE_ENV: Joi.string()
-                    .valid('development', 'staging', 'production')
-                    .default('development'),
+                NODE_ENV: Joi.string().valid('development', 'staging', 'production').default('development'),
                 DB_HOST: Joi.string().required(),
                 DB_PORT: Joi.number().required(),
                 DB_USERNAME: Joi.string().required(),
@@ -27,6 +24,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
                 DB_DATABASE: Joi.string().required(),
             }),
         }),
+
+        // koneksi database PostgreSQL lewat TypeORM
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (config: ConfigService) => ({
@@ -36,17 +35,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
                 username: config.get<string>('DB_USERNAME'),
                 password: config.get<string>('DB_PASSWORD'),
                 database: config.get<string>('DB_DATABASE'),
-                autoLoadEntities: true,
-                synchronize: config.get<string>('NODE_ENV') === 'development',
+                autoLoadEntities: true, // entity didaftarkan lewat TypeOrmModule.forFeature di tiap module
+                synchronize: config.get<string>('NODE_ENV') === 'development', // tabel dibuat otomatis (hanya development)
             }),
         }),
+
         CategoriesModule,
-        ProductsModule,
-        StocksModule,
         SuppliersModule,
         WarehousesModule,
+        ProductsModule,
+        StocksModule,
+        StockMovementsModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
 })
 export class AppModule {}
