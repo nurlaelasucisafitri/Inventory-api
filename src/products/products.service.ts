@@ -4,7 +4,7 @@ import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { Product } from './entities/product.entity.js';
 import { Category } from '../categories/entities/category.entity.js';
 import { Supplier } from '../suppliers/entities/supplier.entity.js';
-import { StockMovementItem } from '../stock-movements/entities/stock-movement-item.entity.js';
+import { StockMovementItem } from '../stock-movements/stock-movements.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
 import { FilterProductDto } from './dto/filter-product.dto.js';

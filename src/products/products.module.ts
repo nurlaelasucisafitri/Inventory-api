@@ -5,7 +5,7 @@ import { ProductsService } from './products.service.js';
 import { Product } from './entities/product.entity.js';
 import { Category } from '../categories/entities/category.entity.js';
 import { Supplier } from '../suppliers/entities/supplier.entity.js';
-import { StockMovementItem } from '../stock-movements/entities/stock-movement-item.entity.js';
+import { StockMovementItem } from '../stock-movements/stock-movements.service.js';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Product, Category, Supplier, StockMovementItem])],
