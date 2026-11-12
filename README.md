@@ -11,7 +11,7 @@ Mencakup kategori, pemasok, gudang, produk, serta transaksi pergerakan stok (bar
 | Nur Laela Suci Safitri | Setup project, Categories, README, perancangan, ERD |
 | Syifa Khaerunisa Nabila | Suppliers, Warehouses |
 | Alief Satrio | Products, Stocks (informasi stok) |
-| (nama anggota 4) | Stock Movements (transaksi barang masuk/keluar) |
+| Galuh Gunawan | Stock Movements (transaksi barang masuk/keluar) |
 
 
 ## Dokumentasi
